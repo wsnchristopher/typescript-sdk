@@ -1,5 +1,24 @@
 # @modelcontextprotocol/client
 
+## 2.3.0
+
+### Patch Changes
+
+- [#2599](https://github.com/modelcontextprotocol/typescript-sdk/pull/2599) [`5238fba`](https://github.com/modelcontextprotocol/typescript-sdk/commit/5238fba4424f82ec1ae9f6f458dd655ab322062d) Thanks [@freya0926](https://github.com/freya0926)! - A server can now serve, and a client can now call, `tasks/get` and `tasks/cancel` of the Tasks extension (SEP-2663) on a 2026-07-28 connection, when the handler is registered and the request is sent with an explicit schema. Every other method that a protocol revision removed is still refused. If one server factory serves both eras and such a handler is meant for 2025-era clients only, register it only when `ctx.era === 'legacy'`.
+
+- [#2908](https://github.com/modelcontextprotocol/typescript-sdk/pull/2908) [`633dd3e`](https://github.com/modelcontextprotocol/typescript-sdk/commit/633dd3e12bff6869c932c4a526341622320912b1) Thanks [@claude](https://github.com/apps/claude)! - The `license` field of the package manifests is now `Apache-2.0`; the `LICENSE` file shipped in each package carries the full terms, including the MIT text for earlier contributions. No code change.
+
+- [#2903](https://github.com/modelcontextprotocol/typescript-sdk/pull/2903) [`e765b3b`](https://github.com/modelcontextprotocol/typescript-sdk/commit/e765b3be84b7eba1837ba8da84acd6898cc47c65) Thanks [@claude](https://github.com/apps/claude)! - With `versionNegotiation` in `'auto'` or pin mode, a `server/discover` probe answered with a 2xx that carries no usable reply (a body that
+  is not JSON under `application/json`, a bare `204`, a missing or unaccepted content type) still rejects `connect()` with
+  `EraNegotiationFailed`; an empty SSE stream or a `202` surfaces as the probe timeout instead. The message now says
+  `the server answered with an unusable reply (...)` instead of reading like a network failure. To connect to a 2025 server behind a front that
+  answers the probe this way, pass `connect(transport, { prior: { kind: 'legacy' } })` or use `mode: 'legacy'`.
+
+- [#2905](https://github.com/modelcontextprotocol/typescript-sdk/pull/2905) [`c0cd01a`](https://github.com/modelcontextprotocol/typescript-sdk/commit/c0cd01a21d867e57b29d7216416b25bf36898292) Thanks [@claude](https://github.com/apps/claude)! - `SSEClientTransport` now retries the SSE connection once after `onUnauthorized()` resolves, as documented. If the retry is also answered with 401, `start()` rejects with `SdkHttpError` (`ClientHttpAuthentication`) instead of calling `onUnauthorized()` again. A 401 on a later reconnect of a stream that had opened still gets one refresh.
+
+- Updated dependencies [[`633dd3e`](https://github.com/modelcontextprotocol/typescript-sdk/commit/633dd3e12bff6869c932c4a526341622320912b1)]:
+    - @modelcontextprotocol/core@2.3.0
+
 ## 2.2.0
 
 ### Minor Changes
